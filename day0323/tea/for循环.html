@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //var, let 报错,const
+        //var 定义的是全局变量
+        //let 定义是局部变量
+        //const 定义的常量，值不能改变
+        /* 三个表达式及循环体*/
+        for(let i = 0; i < 5; i++){
+            console.log(i);
+        }
+        //console.log("i=",i )
+        //求1-100 所有偶数之和
+        let sum = 0; //和
+        for(let i = 1; i <= 100; i++){
+            if(i % 2 == 0){//判断是否是偶数
+                sum += i; //等价于 sum = sum + i
+            }
+        }
+        console.log("1-100偶数之和是：",  sum);
+        //随机100个 1-100之间的整数，求 大于等于60 的个数
+        Math.random(); //随机生成[0-1)之间的小数
+        //parseInt()转成整数的系统函数
+        for(let i = 0; i < 10; i++){
+            a = parseInt(Math.random() * (100-1)) + 1;
+            console.log(a);
+        }
+
+        console.log("**************************");
+        let num = 0; //大于等于60 的个数
+        for(let i = 0; i < 100; i++){
+            a = parseInt(Math.random() * 100) + 1;
+            if( a >= 60){
+                num++;
+            }
+        }
+        console.log("大于等于60的随机数个数是：", num)
+        
+        
+
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

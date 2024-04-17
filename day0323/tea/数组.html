@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //let a, var a,const a
+        //学号，成绩，姓名
+        let sno;
+        let grade;
+        let name;
+        //一个班的成绩，姓名，学号
+        //数组
+        //数组的定义
+        //第一种定义
+        let arr = new Array() ; //Array是js中的关键字
+        //数组中的每个元素访问语法：数组名[下标]
+        arr[0] = 98;  //给数组中的元素赋值
+        arr[1] = 99;
+        console.log(arr)
+        //第二种定义
+        let arr2 = [];
+        console.log(arr2)
+        console.log("***********")
+        //随机 10 个  100-200 之间的整数存入 数组中，
+        // 求出最大值打印出来
+        let num = []; 
+        let max = 0;
+        for(let i = 0; i < 10; i++){
+            num[i] = parseInt(Math.random()*101) + 100;
+            if(num[i] > max){
+                max = num[i];
+            }
+        }
+        console.log(num)
+        console.log("最大值是:", max);
+
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

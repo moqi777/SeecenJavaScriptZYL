@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+                多行注释
+                */
+        // 单行注释
+
+        /*
+        javascript:是主要用来完成客户端的页面交互
+        html css:只能完成静态页面
+         交互效果：
+         客户端交互：不需要通过网络，本地也能完成
+         服务器交互：需要依赖网络实现数据传输
+
+         javascript的组成
+         语法：书写代码的规则和方式
+         DOM：提供访问和操作网页内容的方法和接口
+         BOM：提供了与浏览器交互的方法和接口
+        */
+
+        /*
+        变量：在内存中开辟一段存储数据的空间
+        内存：在系统中临时存储数据的设备
+        硬盘：在系统中永久存储数据的设备
+        */
+        var num;
+        /*
+         var 关键字：有标色，有功能，且由官方命名的符号
+         在内存中开辟空间
+         num 标识符：由开发时临时取的标识符
+
+         js的分号";"可以省略不写，但是建议养成良好的习惯
+        */
+
+        num = 12; //= 赋值号：把符号右侧的数据放入到左侧变量中
+
+        //变量的声明方式
+        //1 先声明后赋值
+        //2 声明同时赋值
+        var num1 = 12;
+        //3 一次声明多个变量且赋值
+        var num2, num3, num4 = 15; //只有num4有值
+
+        //js的常用方法
+        document.writeln(123); //页面打印
+        document.writeln(num1);
+        //alert(num1); //弹出提示框
+
+        document.writeln("我爱中国");
+        var str = "我爱中国";
+
+        var a = 1;
+        var b = "中国";
+        document.writeln(a + 1); //运算符
+        document.writeln(b + 1); //连接符
+        /*
+        变量的两种特性
+        1   数据值
+        2   数据类型
+
+        js的常用数据类型
+        1   number  数字类型
+        2   string  字符串类型
+        3   undefined   未定义
+        4   null    空类型
+        5   boolean    判断类型
+
+        js的特殊值
+        1   undefined
+        2   null
+        3   NaN
+        */
+
+        //typeof()  获取变量的数据类型
+        document.writeln(typeof(a));
+        document.writeln(typeof(b));
+        var c;
+        document.writeln(typeof(c)); //undefined
+        document.writeln(c);
+        var d = null;
+        document.writeln(d);
+
+        document.writeln("中国" - 1); //NaN  无法用数字表示的数字
+        document.writeln(typeof("中国" - 1));
+
+        /*
+        类型转换
+        1   非number转换为number
+        Number()
+                碰到非字符显示NaN，不好用不建议使用。此方法常常被系统默认调用
+        parseInt()
+                从第一个字符开始解析每个字符，直至遇见一个非数字值字符为止
+        parseFloat()
+                从第一个字符开始解析每个字符
+                直至遇见一个非数字值字符为止或者第二个小数点为止
+
+        注意：
+        1   转换空字符返回NaN
+        */
+        var numb = "12.3px"
+        document.writeln(typeof(Number(numb)));
+        document.writeln(Number(numb));
+
+        document.writeln(typeof(parseInt(numb)));
+        document.writeln(parseInt(numb));
+
+        document.writeln(typeof(parseFloat(numb)));
+        document.writeln(parseFloat(numb));
+
+        //注意：parseFloat()方法不能做到对number进行取整
+
+        /*
+        非字符串转换为字符串
+        String() 和 toString()
+        */
+        var ids = 5678;
+        var idstr = ids.toString();
+        document.writeln(typeof(idstr));
+        var idstr2 = String(ids);
+        document.writeln(typeof(idstr2));
+
+        //一般建议使用第一种String进行转换，toString可能会导致程序错误
+        document.writeln(String(undefined));
+        document.writeln(typeof(String(undefined)));
+        document.writeln("<hr/>");
+        //document.writeln(undefined.toString());
+        document.writeln(1234); //因上面一行代码程序错误导致不显示
+        /*
+        程序运行时会出现两种错误
+        1   语法错误，编译错误
+        2   程序错误，特点：只有在程序运行时才会发现
+        */
+    </script>
+</body>
+
+</html>
