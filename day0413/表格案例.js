@@ -74,8 +74,9 @@ const saveOrUpdate = (stuList,stu) => {
             isExist = true;//存在
         }
     }
-    if(!isExist)//不存在，则保存新的数据
-    stuList.push(stu);
+    if(!isExist){//不存在，则保存新的数据
+        stuList.push(stu);
+    }
 }
 
 let del = (obj) =>{
