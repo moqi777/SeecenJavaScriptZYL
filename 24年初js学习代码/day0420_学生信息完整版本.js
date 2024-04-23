@@ -31,7 +31,7 @@ const init =() =>{
         <td contenteditable>${obj.name}</td>
         <td contenteditable>${obj.age}</td>
             <td>
-                <button onclick='updateSave(this)'>保存</button>
+                <button onclick='updateSave(this)'>修改</button>
             <button onclick='del(this)'>删除</button>
         </td>
     </tr>`;
@@ -56,6 +56,18 @@ const save = () =>{
     const name = document.querySelector("#name").value;
     const age = document.querySelector("#age").value;
     const sno = document.querySelector("#sno").value;
+    if(sno == "" || isNaN(sno)){
+        alert("学号不能为空，且必须是数字");
+        return;
+    }
+    if(name == ""){
+        alert("姓名不能为空");
+        return;
+    }
+    if(age == "" || isNaN(age)){
+        alert("年龄不能为空，且必须是数字");
+        return;
+    }
 
     //得到本地存储中现有的学生数据
     let str =localStorage.getItem("stuList");
@@ -84,8 +96,36 @@ const save = () =>{
     }
 }
 
+//根据输入框姓名查询localStorage中该学生
+const search =() =>{
+    //将列表清空
+    document.querySelector("#tbd").innerHTML = "";
+    //获取到输入框元素
+    let keyword = document.querySelector("#keyword").value;
+    let str = localStorage.getItem("stuList");
+    let stuList = JSON.parse(str);
+    //遍历localStorage
+    for(let i = 0;i <= stuList.length;i++){
+        //indexOf(iten)
+        //数组调用：从头到尾检索数组，返回对应第一个item的下标，没有找到返回-1
+        //字符串调用：返回指定字符串在字符串中首次出现的位置，没有找到返回-1
+        if(stuList[i].name.indexOf(keyword) >= 0){
+                let html = `<tr>
+                <td>${stuList[i].sno}</td>
+                <td contenteditable>${stuList[i].name}</td>
+                <td contenteditable>${stuList[i].age}</td>
+                    <td>
+                        <button onclick='updateSave(this)'>修改</button>
+                    <button onclick='del(this)'>删除</button>
+                </td>
+            </tr>`;
+            document.querySelector("#tbd").innerHTML += html;
+        }
+    }
+}
+
 let clearAll = () =>{
-    localStorage.removeItem("stuList");
+    localStorage.removeItem("stuList"); 
     location.reload();//刷新页面
 }
 
@@ -110,6 +150,7 @@ let updateSave =(obj) =>{
         if(stuList[i].sno == stu.sno){
             stuList[i].name = stu.name;
             stuList[i].age = stu.age;
+            break;
         }
     }
     localStorage.setItem("stuList",JSON.stringify(stuList));

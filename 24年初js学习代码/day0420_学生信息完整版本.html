@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生信息表</title>
-    <link rel="stylesheet" href="学生信息完整版本.css">
-    <script src="学生信息完整版本.js"></script>
+    <link rel="stylesheet" href="day0420_学生信息完整版本.css">
+    <script src="day0420_学生信息完整版本.js"></script>
 </head>
 <body>
     <h2>学生信息表<button id="showPopupBtn">增加数据</button>
+        <input type="text" id="keyword" placeholder="请输入需要查询的姓名">
+        <button onclick="search()">查询</button>
         <button onclick="clearAll()">清除所有数据</button>
     </h2>
     

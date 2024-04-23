@@ -16,6 +16,11 @@ javascript的组成
 	语法错误，编译错误
 	程序错误：只有在程序运行时才会发现
 
+```js
+<script>代码写在这里</script>
+<script src="地址"></script> 	<!-- 引入js文件 -->
+```
+
 # 语法
 
 > 语法：书写代码的规则和方式
@@ -69,17 +74,31 @@ js的特殊值
 - null
 - NaN    无法用数字表示的number类型
 
-## 运算符表达式与结构
+## 基础语法
 
 #### 运算符
 
 ```js
 = 赋值
-== 只比价值
+== 只比数据值
 === 比较数值和类型
+!= 只比较值是否不相等
+!== 比较值和类型是否有一个不相等
 || 或者
 && 与
 条件?true:false	三目运算
+```
+
+#### 数组
+
+```js
+//第一种定义方法
+let arrr = new Array();
+arr[0] = 98;
+arr[1] == 97;
+//第二种定义方法
+let arr2 = [];
+let arr3 = [98,97,96];
 ```
 
 #### 分支结构
@@ -157,12 +176,21 @@ function 函数名(形参){
 }
 ```
 
-##### 函数表达式
+##### 匿名函数
 
 ```js
 var 函数名 = function(形参){
     函数体
     return 返回值;
+}
+```
+
+##### 箭头函数
+
+```js
+//没有参数的时候一定要写一个()，只有一个参数可以没有括号，两个参数要用括号括起来
+var 函数名 = () =>{
+    函数体
 }
 ```
 
@@ -191,6 +219,18 @@ String()
 
 //Uncaught TypeError: Cannot read properties of undefined (reading 'toString')
 undefined.toString()
+```
+
+##### 非boolean转换为boolean
+
+> 除了以下五种均为true
+
+```js
+document.writeln(Boolean(0));//false
+document.writeln(Boolean(""));//false
+document.writeln(Boolean(undefined));//false
+document.writeln(Boolean(null));//false
+document.writeln(Boolean(NaN));//false
 ```
 
 ## 常用方法
@@ -286,16 +326,24 @@ var a=['a','b','c']
 
 # DOM
 
-> 提供访问和操作网页内容的方法和接口
+> 概念：
+>
+> ​	Dom：”文档对象模型“，是html的编程接口，提供访问和操作网页内容的方法和接口
+> ​	节点：
+> ​			元素节点：HTML标签
+> ​			文本节点：标签之间的纯文本
+> ​			属性节点：元素节点的属性
+> ​			注释节点：注释的文本
+> ​	事件：某些组件被执行了某些操作（如单击，双击，键盘按下，鼠标移动等）后，触发某些代码的执行
 
-## 获取到Dom元素
+## Dom元素
 
 > 问题：js文件的导入或者书写在html前面会出现获取不到DOM元素的情况
 > 原因：html文件是从上而下扫的，浏览器先识别到js代码便会如此
 > 解决方法
 >
 > - 一是将js文件的导入书写放在文件末尾
-> - 二是在js代码中获取Dom元素步骤写在window.onload方法（窗口加载完成后的事件）中
+> - 二是在js代码中获取Dom元素步骤写在window.onload（窗口加载完成后的事件）中
 
 ```js
 window.onload=()=>{
@@ -304,20 +352,31 @@ window.onload=()=>{
 }
 ```
 
-以下方法均是**document**开头，获取到元素
+#### 获取到Dom元素
+
+> 以下方法均是**document**开头
 
 ```js
 .write();
 	向文档写入HTML表达式或js代码
+
+.querySelect("css样式选择器");
+	返回带有指定的css样式选择器获取到的节点
+.querySelectAll("css样式选择器;
+	返回带有指定的css样式选择器获取到的节点列表
 .getElementByld("id名");
 	返回带有指定id的元素
+.getElementByName("name名");
+	返回带有指定name名的所有元素的节点列表
 .getElementsTagName；
 	返回包含带有指定标签名称的所有元素的节点列表
 .getElementsByClassName("类名");
 	包含带有指定类名的所有元素的节点列表
 ```
 
-一下方法均是  **元素**  开头
+#### Dom元素的操作
+
+> 以下方法均是  **元素**  开头
 
 ~~~js
 .getAttrlbute("[属性名]");
@@ -332,7 +391,7 @@ window.onload=()=>{
 .lnnerHTML;
 	设置或返回元素标签中间的html标签
     //同上
-    
+    //document.getElementByld("form").lnnerhtml+=需要增加的html值
 .style
 	设置页面元素的样式
 	//document.getElementByld("id名").style.backgroundColor = "black";
@@ -340,23 +399,152 @@ window.onload=()=>{
 	获取或设置html元素的class属性
     //document.getElementByld("id名").className;	返回类名
     //document.getElementByld("id名").className = "类名";	设置类名
+~~~
 
+## 节点
+
+### 获取到节点
+
+> 以下方法均是  **元素**  开头
+
+```js
 .parentNode
 	返回元素节点的父节点
+    
 .childNodes
 .children
 	返回元素节点的子节点集合，使用下标访问到具体节点，前者包含空白节点(回车、空格、制表符)
+
 .fistChild
 .firstElementChild
 	返回元素节点的第一个子节点,前者可能会获取到空节点，不建议使用
+
 .lastChild
 .lastElementChild
 	返回元素节点的最后一个子节点,前者可能会获取到空节点，不建议使用
+
 .nextSibling
 .nextElementSibling
 	返回下一个兄弟节点，前者可能会获取到空节点，不建议使用
+    
 .previousSibing
 .previousElementSibling
 	返回上一个兄弟节点，前者可能会获取到空节点，不建议使用
-~~~
+```
+
+### 节点的操作
+
+```sj
+document.createElement("[标签名]");
+document.createTextNode("[文本值]");
+	创建一个节点或文本,给节点赋属性直接点属性名或者用setAttrilbute
+	//let B = document.createElement("input");
+	//B.type="submit";
+	//B.setAttrilbute("name","submit");
+	
+A.appendChild(B);
+	向节点A的子节点列表的末尾添加新的子节点B
+C.insertBefore(A,B);
+	将节点A插入节点B之前，C为B的父节点
+	
+A.cloneNode(boole);
+	克隆节点A，参数为是否克隆子节点。
+	//var clone = document.getElementById("my-element").cloneNode(true);
+	
+A.removeChild(B);
+	//删除指定节点中的子节点，A为父节点，B为要删除的节点，返回B节点。
+	//删除后的节点B虽然不在文档树中了，但其实它还在内存中，可以随时再次被添加到别的位置。
+A.remove();
+	//删除指定节点A
+	//document.getElementById("my-element").remove();
+	
+A.replaceChild(newNode,oldNode);
+	//替换节点，A为父节点，newNode为新节点，oldNode为老节点
+	//1.当 oldnode 被替换时，所有与之相关的属性内容都将被移除。
+	//2.newnode 必须先被建立。
+```
+
+## js事件
+
+### 常用事件
+
+##### 点击事件：
+
+- onclick：单击事件
+- ondblclick：双击事件
+
+##### 焦点事件
+
+- onblur：失去焦点
+- onfocus:元素获得焦点
+
+##### 加载事件
+
+- onload：一张页面或一幅图像完成加载
+
+##### 鼠标事件
+
+- onmousedown 鼠标按钮被按下。
+- onmouseup 鼠标按键被松开。
+- onmousemove 鼠标被移动。
+- onmouseover 鼠标移到某元素之上。
+- onmouseout 鼠标从某元素移开。
+
+##### 键盘事件
+
+- onkeydown 某个键盘按键被按下。
+- onkeyup 某个键盘按键被松开。
+- onkeypress 某个键盘按键被按下并松开。
+
+##### 选择和改变事件
+
+- onchange 域的内容被改变。
+- onselect 文本被选中。
+
+##### 表单事件
+
+- onsubmit 确认按钮被点击。
+- onreset 重置按钮被点击。
+
+### 事件的注册
+
+> 什么是事件的注册（绑定）？
+> 其实就是告诉浏览器，当事件响应后要执行哪些操作代码
+>
+> 注册事件分两种方式
+> 	静态注册事件：
+> 	动态注册事件
+
+##### 静态注册事件
+
+> 通过html标签的事件属性直接赋予事件响应后的代码，即在html标签中通过将方法以属性值赋值给事件方法
+
+```js
+function sayHello(){
+    alert("hello js!");
+}
+//注册事件的第一种方式，直接在标签中使用事件句柄
+//将sayHello函数注册到按钮上，等待click事件发生之后
+<input type="button" value="hello" onclick="sayHello()"/>
+```
+
+##### 动态注册事件
+
+> 先通过js代码得到标签的dom对象，然后再通过dom对象.事件名=function(){}
+>
+> 动态注册基本步骤：
+> 		获取标签对象
+> 		标签对象.事件名=function(){}
+
+```js
+function dynamic(){}
+var btnobj1 = document.getElementById("mybtn1");
+btnobj1.onclick = dynamic;//千万别加小括号，否者在扫到这段代码时直接调用执行函数了
+
+var btnobj2 = document.getElementById("mybtn2");
+//匿名函数。该函数在页面打开时只是注册上，不会被调用，在click事件发生后才会调用
+btnobj2.onclick = function(){}
+//箭头函数
+btnobj2.onclick = () => {}
+```
 
