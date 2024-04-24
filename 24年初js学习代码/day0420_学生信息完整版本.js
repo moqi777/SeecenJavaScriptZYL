@@ -20,6 +20,8 @@ window.onload=()=>{
 //从本地存储中，读取本地所有学生数据
 //将数据追加到页面上
 const init =() =>{
+    //将页面元素清空
+    document.querySelector("#tbd").innerHTML ="";
     let str = localStorage.getItem("stuList");
     let stuList = JSON.parse(str);
     if(null == stuList){
@@ -96,8 +98,8 @@ const save = () =>{
     }
 }
 
-//根据输入框姓名查询localStorage中该学生
-const search =() =>{
+//根据输入框姓名查询localStorage中该学生，然后将查询到的含有输入信息的学生展现出来
+const searchOrShow =() =>{
     //将列表清空
     document.querySelector("#tbd").innerHTML = "";
     //获取到输入框元素
@@ -120,6 +122,33 @@ const search =() =>{
                 </td>
             </tr>`;
             document.querySelector("#tbd").innerHTML += html;
+        }
+    }
+}
+
+//将查询到的学生姓名标红
+const searchOrRed =() =>{
+    //获取到输入框元素
+    let keyword = document.querySelector("#keyword").value;
+    //获取到当前页面的表单元素
+    let tbd = document.querySelector("#tbd");
+    //获取到所有的tr
+    let trs = tbd.children;
+    //先清除效果(初始化一次)
+    init()
+    //遍历trs
+    for(let i=0;i < trs.length;i++){
+        //tr下标为1的子节点为name，匹配到了查询词
+        if(trs[i].children[1].innerHTML.indexOf(keyword) >=0){
+            let td = trs[i].children[1].innerHTML//此处的td是表单中name的全称，而我们只需要将输入框部分标红即可
+            let fistIndex = td.indexOf(keyword);//输入框内容在name全称中的起始下标
+            let endIndex = fistIndex+keyword.length;//输入框内容在name全称中的末尾下标
+            //截取字符串
+            let strFist = td.substring(0,fistIndex);
+            let strEnd = td.substring(endIndex);
+            
+            //替换该html
+            trs[i].children[1].innerHTML = `${strFist}<span style="color: red;font-weight:bold;">${keyword}</span>${strEnd}`;
         }
     }
 }

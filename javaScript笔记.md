@@ -324,6 +324,41 @@ var a=['a','b','c']
      提示：只插入的话可以：var b = a.splic(1,0,"apple");//a=['a','value','b','c']
 ```
 
+## 扩展
+
+### 模版字符串
+
+> 是一种字符串字面量，使用反引号（``)来标识，可以包含动态的部分，即在运行时表达式的值可以嵌入其中
+>
+> 表达式写在${}内，在模版字符串中如果需要使用反引号，可以使用反斜杠（\）转义它
+
+```js
+const name = 'Alice';
+const age = 25;
+const greeting = `Hello, my name is ${name} and I am ${age} years old.`;
+//Hello, my name is Alice and I am 25 years old.
+```
+
+模版字符串也可以用于多行字符串，以为它们保留了内部的空格和换行符
+
+```js
+const multiLine = `This is a multi-line
+string using a template
+literal.`;
+/*
+This is a multi-line
+string using a template
+literal.
+*/
+```
+
+### localStorage
+
+> 以键值对的方式永久储存数据在本地
+> 在浏览器中查看：打开该地址，f12进入开发者模式->Application->Storage->Local storage
+
+https://blog.csdn.net/2201_75918981/article/details/136786243
+
 # DOM
 
 > 概念：
