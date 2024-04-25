@@ -101,6 +101,17 @@ let arr2 = [];
 let arr3 = [98,97,96];
 ```
 
+#### Set
+
+> set中的每个元素都是唯一的
+
+```js
+//创建空集合
+let mySet = new Set();
+//使用数组初始化集合
+let anotherSet = new Set([1,2,3,3,4]);//其中重复的值会被去除
+```
+
 #### 分支结构
 
 if分支
@@ -138,7 +149,7 @@ switch(a){
 >
 > 冒泡排序口诀：外层循环N-1，内层循环N - i - 1
 
-while循环
+**while循环**
 
 ```js
 while(循环条件){
@@ -147,7 +158,7 @@ while(循环条件){
 }
 ```
 
-for循环
+**for循环**
 
 嵌套循环从内往外执行
 
@@ -159,6 +170,20 @@ for(表达式1;表达式2;表达式3){循环体结构}
 //		表达式3:用于循环变量的改变,可做加减法
 ```
 
+**foreach循环**
+
+```js
+Array.forEach(function(value,index,array){
+    //value:当前元素
+    //index:当前元素的索引，可省略
+    //array:输出原数组，可省略
+})
+//或者也可以直接用箭头函数
+Array.forEach((value,index,array)=>{
+    
+})
+```
+
 #### 函数
 
 > 使用函数：函数名(实参);
@@ -167,7 +192,7 @@ for(表达式1;表达式2;表达式3){循环体结构}
 >
 > 函数的参数没有限制,但是返回只能有一个
 
-##### 函数的声明
+函数的声明
 
 ```js
 function 函数名(形参){
@@ -176,7 +201,7 @@ function 函数名(形参){
 }
 ```
 
-##### 匿名函数
+匿名函数
 
 ```js
 var 函数名 = function(形参){
@@ -185,7 +210,7 @@ var 函数名 = function(形参){
 }
 ```
 
-##### 箭头函数
+箭头函数
 
 ```js
 //没有参数的时候一定要写一个()，只有一个参数可以没有括号，两个参数要用括号括起来
@@ -193,6 +218,74 @@ var 函数名 = () =>{
     函数体
 }
 ```
+
+#### 类和对象
+
+> 类是具有相同的属性和方法的集合
+> 是一种抽象的，并不实际存在的，表示一种事物共有特征的描述
+>
+> 对象是类中具体一个实例
+> 是一种具体的，实际存在的，类中的某一个个体	
+
+**创建对象**
+
+字面式对象
+
+```js
+var 对象={
+    key1:value1,
+    key2:value2
+}；//声明字面式对象
+对象.属性=	,对象.方法(){}	//给对象添加属性和方法
+```
+
+通过object类创建对象
+
+```js
+//Object类是所有类的父类
+var obj = new Object();
+```
+
+**创建类**
+
+```js
+//constructor() 是类的构造方法（默认方法），用于传递参数，返回实例对象。通过new命令实例化生成对象的时候，自动调用该方法，如果没有显式定义，类内部自动创建一个constructor()
+//super() 用于访问父类对象上的属性，调用对象的父类上的函数不论是普通函数还是构造函数
+class car{
+    constructor(){}
+    super();
+}
+```
+
+例：
+
+```js
+class Father{
+    constructor(x,y){
+        this.x = x;
+        this.y = y;
+    }
+    sum(){
+        console.log(this.x + this.y);
+    }
+}
+```
+
+```js
+class Son extends Father{
+    constructor(x,y){
+        super(x,y);//调用父类中的构造函数
+    }
+}
+var son = new Son(1,2);
+son.sum();//3
+```
+
+注意：
+
+​		1.就近原则：实例化子类输出一个方法，优先看子类有没有这个方法，如果子类有，就优先执行子类中的方法，子类没有则去父类查找这个方法
+​		2.this的指向：constructor里面的this指向的是创建的实例对象。方法里面的this指向的是方法的调用者。
+​		3.子类通过super调用父类的构造方法，并且super必须在子类this之前
 
 ## 类型转换
 
@@ -241,6 +334,7 @@ document.writeln(Boolean(NaN));//false
 前台显示	alert("弹窗");
 后台显示	console.log('内容');
 弹出输入框	var 变量接受输入内容 = prompt("弹窗输入提示");
+页面刷新	location.reload()
 ```
 
 ##### 小数
@@ -296,6 +390,11 @@ document.writeln(Boolean(NaN));//false
 	从后往前找
 .charAt([index])
 	查找指定下标位置的字符
+    
+String.fromCharCode([Unicode]...)
+	将Unicode码转换为对应字符返回（A-Z:65-90,a-z:97-122）
+.charCodeAt(index)  
+	将字符转换为Unicode码返回，index为字符串中字符的下标
 ```
 
 ##### 数组
@@ -322,6 +421,23 @@ var a=['a','b','c']
      只有前两个参数：删除index下标位置开始后面number个元素
      三个参数都有：在前面的基础上并在index位置插入value
      提示：只插入的话可以：var b = a.splic(1,0,"apple");//a=['a','value','b','c']
+```
+
+##### Set
+
+```js
+mySet.add([value]);
+	向集合中添加元素，如果元素已存在，则不会重复添加
+mySet.delete([value]);
+	删除集合中的指定元素，如果元素不存在，则不会有任何操作
+mySet.has([value]);
+	检测该元素是否存在于集合中，返回布尔
+mySet.size
+	获取集合中的元素数量
+mySet.clear()
+	清空集合
+Array.from(set);
+	将set转换为数组返回
 ```
 
 ## 扩展
@@ -357,7 +473,43 @@ literal.
 > 以键值对的方式永久储存数据在本地
 > 在浏览器中查看：打开该地址，f12进入开发者模式->Application->Storage->Local storage
 
-https://blog.csdn.net/2201_75918981/article/details/136786243
+```js
+//存取都需要json格式数据
+.setItem(key,value)
+	存数据
+.getItem(key) 
+	取数据
+.removeItem(key)
+	移除某项数据
+.clear()
+	清除所有值
+```
+
+### JSON
+
+> json是一种轻量级的数据交换格式，在语法上与创建JavaScript对象代码相同
+>
+> 语法规则：
+> 		数据为 键/值 对
+> 		数据由逗号分隔
+> 		大括号保存对象
+> 		方括号保存数组
+
+```js
+//JSON实例
+{"sites":[
+    {"name":"Runoob", "url":"www.runoob.com"}, 
+    {"name":"Google", "url":"www.google.com"},
+    {"name":"Taobao", "url":"www.taobao.com"}
+]}
+```
+
+```js
+.stringify();
+	把对象(数组，set，类)转为json字符串
+.parse();
+	把json字符串解析转换为js对象(数组，set，类)
+```
 
 # DOM
 
@@ -419,6 +571,9 @@ window.onload=()=>{
 .setAttrilbute("[属性名]","[属性值]");
 	给元素赋值
     
+//三者区别：innerText用于获取和设置HTML元素的可见文本，只会包含文本内容没有HTML标签。适用于大多数HTML元素，如div,span,p	
+//innerHtml可以获取或设置元素的整个HTML内容，包括所有的HTML标签、子标签和文本
+//value用于获取或设置表单元素的值，主要用于输入相关的HTML元素，如input,textarea,select   
 .innerText;
 	设置或返回元素标签中间的文本值
     //document.getElementByld("form").lnnerText;
@@ -427,6 +582,9 @@ window.onload=()=>{
 	设置或返回元素标签中间的html标签
     //同上
     //document.getElementByld("form").lnnerhtml+=需要增加的html值
+.value;
+	获取到表单元素的值
+    
 .style
 	设置页面元素的样式
 	//document.getElementByld("id名").style.backgroundColor = "black";
@@ -438,7 +596,7 @@ window.onload=()=>{
 
 ## 节点
 
-### 获取到节点
+#### 获取到节点
 
 > 以下方法均是  **元素**  开头
 
@@ -467,7 +625,7 @@ window.onload=()=>{
 	返回上一个兄弟节点，前者可能会获取到空节点，不建议使用
 ```
 
-### 节点的操作
+#### 节点的操作
 
 ```sj
 document.createElement("[标签名]");
