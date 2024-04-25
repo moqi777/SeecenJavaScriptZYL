@@ -212,6 +212,8 @@ var 函数名 = function(形参){
 
 箭头函数
 
+> 注意：箭头函数中不能使用this
+
 ```js
 //没有参数的时候一定要写一个()，只有一个参数可以没有括号，两个参数要用括号括起来
 var 函数名 = () =>{
@@ -284,7 +286,7 @@ son.sum();//3
 注意：
 
 ​		1.就近原则：实例化子类输出一个方法，优先看子类有没有这个方法，如果子类有，就优先执行子类中的方法，子类没有则去父类查找这个方法
-​		2.this的指向：constructor里面的this指向的是创建的实例对象。方法里面的this指向的是方法的调用者。
+​		2.this的指向：constructor里面的this指向的是创建的实例对象。方法里面的this指向的是方法的调用者。箭头函数中不能使用this
 ​		3.子类通过super调用父类的构造方法，并且super必须在子类this之前
 
 ## 类型转换
@@ -337,11 +339,13 @@ document.writeln(Boolean(NaN));//false
 页面刷新	location.reload()
 ```
 
-##### 小数
+##### 数字
 
 ````js
 .toFixed([保留小数的位数])
 	设置小数位数，四舍五入
+isNaN([number])
+	判断一个number是否为NaN(有效数字)
 ````
 
 ##### 字母
@@ -421,6 +425,35 @@ var a=['a','b','c']
      只有前两个参数：删除index下标位置开始后面number个元素
      三个参数都有：在前面的基础上并在index位置插入value
      提示：只插入的话可以：var b = a.splic(1,0,"apple");//a=['a','value','b','c']
+
+.map
+const newArray = oldArray.map((element, index, array) => {
+    // 对 element 进行处理并返回新的值
+    //element：当前遍历的数组元素
+    //index：当前元素的索引位置，可选
+    //array：原始数组，可选
+});
+	对数组中的每个元素执行某个操作，然后返回一个新的数组
+例：
+let nums = [2,4,6,8,7];
+let newNums = nums.map(function(val){
+            return val*3;
+        })// 输出: [6, 12, 18, 24, 21]
+精简语法：newNums = nums.map(n => n*3);
+
+.filter
+const newArray = oldArray.filter((element, index, array) => {
+    // 返回一个布尔值，决定元素是否包含在新数组中
+});
+	用于创建一个新数组，其中包含原数组中满足特定条件的元素
+例子:
+let nums = [2,4,7,5,8,10];
+ newNums = nums.filter(n=>{
+          return n%2 == 0;
+       })// 输出: [2, 4, 8, 10]
+精简语法：let newNums = nums.filter(n => n%2==0);
+//链式调用
+let newNums = nums.filter(n => n%2 != 0).map(n => n*3); // 输出: [21, 15]
 ```
 
 ##### Set
