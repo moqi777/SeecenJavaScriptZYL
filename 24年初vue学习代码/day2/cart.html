@@ -20,7 +20,7 @@
         <table width="600">
             <caption>购物车</caption>
             <tr>
-                <td><input type="checkbox" v-model="checked" @change="selectAll"></td>
+                <td><input type="checkbox" v-model="checked" @change="selectAll"></td>  
                 <td>商品ID</td>
                 <td>商品名称</td>
                 <td>单价</td>
@@ -30,7 +30,7 @@
             </tr>
             <tr v-for="item in carList">
                 <td><input type="checkbox" v-model="item.checked"></td>
-                <td>{{item.id}}</td>
+                <td>{{item.id}}</td>    
                 <td>{{item.name}}</td>
                 <td>
                     <span style="color: red;font-weight: bold;">￥</span>
