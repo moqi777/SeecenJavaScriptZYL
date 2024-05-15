@@ -1,0 +1,21 @@
+1: 设置 镜像下载地址:
+在nvm安装路径下修改settings.txt:
+node_mirror: https://cdn.npmmirror.com/binaries/node/
+npm_mirror: https://cdn.npmmirror.com/binaries/npm/
+
+2:查看可用的在线版本
+nvm list available
+
+3：查看已安装版本
+nvm ls
+
+4:切换版本
+nvm use  版本号
+
+5:安装版本
+nvm install  版本号
+
+6:卸载版本
+nvm uninstall 版本号
+
+
