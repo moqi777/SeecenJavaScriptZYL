@@ -65,6 +65,24 @@ npm install pnpm -g
 	全局安装pnpm
 ```
 
+#### 修改镜像
+
+```
+pnpm config get registry
+	查看当前pnpm下载地址
+pnpm config set registry http://registry.npmmirror.com
+	切换为阿里云镜像命令
+```
+
+#### 允许本机脚本执行
+
+> 未设置允许本机脚本执行node项目只可在cmd中运行，vsCode中无法使用
+
+① 管理员身份运行 window powershell
+② 执行：get-ExecutionPolicy，显示Restricted，表示状态是禁止的;
+③ 执行：set-ExecutionPolicy RemoteSigned
+④ 输入：A
+
 #### 创建项目
 
 > npm与pnpm创建运行项目一模一样
@@ -81,21 +99,12 @@ pnpm create vite
 
 此时在指定文件夹下创建项目成功，项目中的package.json为项目的包管理文件
 
-#### 允许本机脚本执行
-
-> 未设置允许本机脚本执行node项目只可在cmd中运行，vsCode中无法使用
-
-① 管理员身份运行 window powershell
-② 执行：get-ExecutionPolicy，显示Restricted，表示状态是禁止的;
-③ 执行：set-ExecutionPolicy RemoteSigned
-④ 输入：A
-
 #### 运行项目
 
 进入到项目下cmd
 
 ```
-pnpm insatll
+pnpm install
 	根据package.json文件中的dependencies下载导入依赖
 pupm run dev
 	运行项目
@@ -129,6 +138,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import  axios  from 'axios'
+//导入ElementPlus组件
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'

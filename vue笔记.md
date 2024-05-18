@@ -38,8 +38,18 @@
             }
         },
         methods:{   //定义函数的区域
-
-        }
+			method1(){},
+            method2(){}
+            ...
+        }，
+        computed:{	//计算属性声明区
+        	money:{	//money是计算属性的名字
+        		get:function(){
+                      ...
+                    return 值;
+                }
+    		}
+    	}
     }
 const vue = Vue.createApp(app);//创建一个vue实例
 vue.mount("#dv");//让vue与div绑定
