@@ -1,3 +1,5 @@
+# 简介
+
 - nvm：node版本管理工具，通过它可以安装多种node版本并且可以快速、简单的切换node版本。
 - Node.js：是运行在服务端的JavaScript，是一个基于Chrome JavaScript 运行时建立的一个平台。
 - NPM：是随着NodeJs一起安装的包管理工具
@@ -82,86 +84,6 @@ pnpm config set registry http://registry.npmmirror.com
 ② 执行：get-ExecutionPolicy，显示Restricted，表示状态是禁止的;
 ③ 执行：set-ExecutionPolicy RemoteSigned
 ④ 输入：A
-
-#### 创建项目
-
-> npm与pnpm创建运行项目一模一样
-
-1. 在指定存放项目的文件夹下cmd，执行
-
-```
-pnpm create vite
-```
-
-2. 输入项目名
-3. 按键盘上下键选择vue
-4. 选择javascript
-
-此时在指定文件夹下创建项目成功，项目中的package.json为项目的包管理文件
-
-#### 运行项目
-
-进入到项目下cmd
-
-```
-pnpm install
-	根据package.json文件中的dependencies下载导入依赖
-pupm run dev
-	运行项目
-```
-
-
-
-
-
-3：引入ElementPlus
-用vscode 打开刚创建好的项目，打开命令行终端执行命令：
-
-	pnpm install element-plus --save
-	pnpm install @element-plus/icons-vue --save
-4：引入路由
-
-```
-pnpm install vue-router --save
-```
-
-5：引入axios
-
-```
-pnpm install axios --save
-```
-
-6：把main.js改为如下代码：
-
-```
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import  axios  from 'axios'
-//导入ElementPlus组件
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import locale from 'element-plus/es/locale/lang/zh-cn'
-// 设置基础访问路径
-axios.defaults.baseURL='http://127.0.0.1:88/'
-
-const app = createApp(App)
-app.use(router)
-app.use(ElementPlus, {locale })
-app.mount('#app')
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
-  }
-app.config.globalProperties.$axios = axios
-```
-
-7：运行项目
-
-```
- pnpm install
- pnpm run dev
-```
 
 # pnpm和npm区别
 
