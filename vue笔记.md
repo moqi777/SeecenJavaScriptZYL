@@ -16,6 +16,8 @@
 
 ## 2 基础
 
+> 该章语法为vue2的选项式API
+
 ### 2.1 使用步骤
 
 **1：在html中创建一个div或者其他容器对象**
@@ -207,6 +209,10 @@ data(){
 
 ## 3 使用node管理项目
 
+> 该章语法为vue3的组合式API
+
+[Element Plus](https://element-plus.org/zh-CN/)
+
 #### 3.1 创建项目
 
 > npm与pnpm创建运行项目一模一样
@@ -238,17 +244,203 @@ pupm run dev
 
 目录：
 
-- 
+- node_modules：存放依赖包，由pnpm管理
+- public：存放静态资源（网站图标、HTML文件、第三方库）。不会被打包
+- src：存放源代码
+  - assess：存放静态资源（图片、字体、音频等），会被打包
+  - components：存放Vue组件
+  - App.vue：根组件，是其他组件的父组件
+  - main.js：项目的入口文件，创建Vue实例并挂载到'#app'
+  - main.css：主要样式文件
+- .gitignore：Git忽略文件配置，例如node_modules/、dist/（发行版本）
+- index.html：项目主HTML文件，应用入口文件，包含Vue应用挂载点
+- package.json：项目的配置文件
+- pnpm-lock.yaml：依赖锁文件，锁定项目依赖的确切版本
+- README.md：项目自述文件，包含项目介绍、使用说明、开发指南等
+- vite.config.js：Vite的配置文件，配置Vite构建工具的相关选项
 
+#### 3.4 项目开发
 
+> 以下步骤都可以在ElementPlus官网找到教程
 
-3：引入ElementPlus
+**引入ElementPlus和icons**
+
 用vscode 打开刚创建好的项目，打开命令行终端执行命令：
+
+- element-plus：elementPlus依赖包
+- @element-plus/icons-vue：为elementPlus提供的独立图标库包
+- --save：将包添加到 package.json 文件的 dependencies 部分
 
 ```
 pnpm install element-plus --save
 pnpm install @element-plus/icons-vue --save
 ```
+
+在main.js中导包
+
+```js
+//导入ElementPlus组件
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+//导入图标
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+//设置中文地区
+import locale from 'element-plus/es/locale/lang/zh-cn'
+```
+
+main.js中：在 Vue 应用中全局注册 Element Plus 库，并且设置特定的国际化配置（locale）
+
+```js
+const vue = createApp(App);
+//必须在mount之前
+vue.use(ElementPlus, {locale });
+vue.mount('#app');
+```
+
+在main.js中注册图标
+
+```js
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    vue.component(key, component)
+  }
+```
+
+**对原先默认项目调整**
+
+style.css中只保留body和#app，且细微调整
+
+```css
+body {
+  margin: auto;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+```
+
+src下创建views文件夹存放我们自己的组件
+views中创建products.vue文件
+
+```vue
+<template>	//该标签无实质性作用，只是一个模版
+
+</template>
+```
+
+清空App.vue原有vite组件与样式内容，导入使用自己的组件
+
+```vue
+<script setup>
+import products from './views/products.vue';
+</script>
+
+<template>
+  <products />
+</template>
+
+<style scoped>
+</style>
+```
+
+**写自己的组件（Table表格）**
+
+> 代码参考Element中的Table表格->固定列/多选
+
+products.vue
+
+```vue
+<template>
+    <h1>产品</h1>
+    <p>
+        <el-button type="primary" @click="showAddDialog = true">增加</el-button>
+    </p>
+    <el-table border :data="goods">
+        <el-table-column fixes="left" type="selection" width="50px"></el-table-column>
+        <el-table-column width="100" label="产品ID" prop="id"></el-table-column>
+        <el-table-column width="100" label="产品名" prop="name"></el-table-column>
+        <el-table-column width="100" label="价格" prop="price"></el-table-column>
+        <el-table-column width="100" label="库存" prop="stock"></el-table-column>
+        <el-table-column width="120" label="操作">
+            <!-- scope 包含了当前行的数据以及一些其他信息，比如索引、行对象等，我们可以通过 scope 来访问到当前行的数据，比如 scope.row、scope.column 等 -->
+            <template #default="scope">
+                <el-button type="success" size="small" circle icon="edit"></el-button>
+                <el-button type="danger" @click="del(scope.row.id)" size="small" circle icon="delete"></el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    <el-dialog style="width: 40%;height:350px;" v-model="showAddDialog">
+        <el-form label-width="auto" style="max-width: 80%;">
+            <el-form-item label="产品名称：">
+                <!-- 在组件中会自动加载ref，所以不需要.value -->
+                <el-input v-model="addForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="产品价格：">
+                <el-input-number v-model="addForm.price"></el-input-number>
+            </el-form-item>
+            <el-form-item label="库存：">
+                <el-input-number v-model="addForm.stock"></el-input-number>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" style="margin: auto;" @click="doAdd()">增加</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+</template>
+
+<!-- setup 组合式API 的标识 -->
+<!-- 原先的是选项式API -->
+<script setup>
+    /*
+    ref 是vue中的一个响应式函数
+    响应式：即类似于双向绑定，一起动作
+    在选项式API中的数据默认是响应式的，组合式API是非响应式的
+    所以需要使用ref函数使其变成响应式的
+    */
+    import { ref } from 'vue'   
+
+    let showAddDialog = ref(false);
+
+    let addForm = ref({name:'',price:'',stock:10}); 
+
+    let goods = ref([
+        {id:1,name:"手机",price:7000,stock:300},
+        {id:3,name:"电脑",price:8000,stock:200},
+        {id:4,name:"U盘",price:80,stock:500},
+        {id:6,name:"显卡",price:1200,stock:250},
+        {id:7,name:"金士顿内存",price:500,stock:300},
+        {id:8,name:"SSD",price:500,stock:600}
+    ]);
+
+    const del = id =>{
+        //使用了ref后goods不单单只是个数组了，所以需要.value
+        goods.value.forEach((item,i) => {
+            if(item.id == id){
+                //删除i位置开始的1个数据
+                goods.value.splice(i,1);
+            }
+        })
+    }
+
+    const doAdd = ()=>{
+        //会自动增加id字段，动态增加
+        addForm.value.id = goods.value[goods.value.length-1].id +1;
+        goods.value.push(addForm.value);
+        showAddDialog.value = false;
+        //删除原来的数组
+        addForm.value = {id:'',name:'',price:'',stock:10};
+    }
+</script>
+```
+
+
+
+
 
 4：引入路由
 
