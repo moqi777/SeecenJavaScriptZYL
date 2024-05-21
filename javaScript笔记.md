@@ -414,6 +414,8 @@ String.fromCharCode([Unicode]...)
     var a=[];var a=a.concat([arr1],[arr2])
 .join("[分隔符]")
     数组转换成字符串，将所有数组成员穿插分隔符返还字符串，没有参数默认逗号分隔
+.includes(arr)
+	判断数组是否包含arr
 //删除与添加
 var a=['a','b','c']    
 .push('[value1]','[value2]'...)

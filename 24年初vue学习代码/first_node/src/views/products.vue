@@ -1,9 +1,11 @@
 <template>
     <h1>产品</h1>
+
     <p>
         <el-button type="primary" @click="showAddDialog = true">增加</el-button>
         <el-button type="primary" @click="delSelected()">删除所选</el-button>
     </p>
+
     <!-- ref="tableData"：设置一个名为tableData的引用，用于将表格所选行传入 -->
     <el-table border :data="goods" ref="tableData">
         <el-table-column fixes="left" type="selection" width="50px"></el-table-column>
@@ -38,6 +40,7 @@
             </el-form-item>
         </el-form>
     </el-dialog>
+
     <!-- 修改的弹出框 -->
     <el-dialog style="width: 40%;height:350px;" v-model="showEditDialog" @closed="dialogClosed()">
         <el-form label-width="auto" style="max-width: 80%;">
@@ -69,34 +72,25 @@
     在选项式API中的数据默认是响应式的，组合式API是非响应式的
     所以需要使用ref函数使其变成响应式的
     */
-import { onMounted, ref } from 'vue'   
+	import { onMounted, ref } from 'vue'   
 
     //保存页面和修改页面的开关
     let showAddDialog = ref(false);
     let showEditDialog = ref(false);
-
     //变量存储当前处理行数据
     let addForm = ref({name:'',price:100,stock:10}); 
-
     //变量存储页面展示的所有数据
-    let goods = ref([
-        // {id:1,name:"手机",price:7000,stock:300},
-        // {id:3,name:"电脑",price:8000,stock:200},
-        // {id:4,name:"U盘",price:80,stock:500},
-        // {id:6,name:"显卡",price:1200,stock:250},
-        // {id:7,name:"金士顿内存",price:500,stock:300},
-        // {id:8,name:"SSD",price:500,stock:600}
-    ]);
-
+    let goods = ref([]);
     //创建一个响应式引用
     let tableData = ref();
 
     //删除所选
     const delSelected =()=>{
         let rows = tableData.value.getSelectionRows();
-        console.log(rows);
+        goods.value = goods.value.filter(item=> !rows.includes(item));
+        save();
     }
-
+	//删除指定id行
     const del = id =>{
         //使用了ref后goods不单单只是个数组了，所以需要.value
         goods.value.forEach((item,i) => {
@@ -107,12 +101,11 @@ import { onMounted, ref } from 'vue'
         })
         save();
     }
-
     //弹窗关闭时清空addForm
     const dialogClosed = () =>{
         addForm.value = {id:'',name:'',price:100,stock:10};
     }
-
+	//添加
     const doAdd = ()=>{
         if(goods.value.length > 0){
             //会自动增加id字段，动态增加
@@ -120,12 +113,10 @@ import { onMounted, ref } from 'vue'
         }else{
             addForm.value.id = 1;
         }
-        
         goods.value.push(addForm.value);
         showAddDialog.value = false;
         save();
     }
-
     //打开修改框
     const showEdit = row =>{
         showEditDialog.value = true;
@@ -147,13 +138,11 @@ import { onMounted, ref } from 'vue'
         showEditDialog.value = false;
         save();
     }
-
     //保存到浏览器的本地存储中
     const save = ()=>{
         const str = JSON.stringify(goods.value);
         localStorage.setItem("goods",str);
     }
-
     //onMounted() 钩子函数，组件被挂载到 DOM 后执行特定的代码 
     //类似于java中的构造函数 在页面执行前会自动调用
     onMounted(()=>{

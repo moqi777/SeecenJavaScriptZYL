@@ -356,10 +356,14 @@ products.vue
 ```vue
 <template>
     <h1>产品</h1>
+
     <p>
         <el-button type="primary" @click="showAddDialog = true">增加</el-button>
+        <el-button type="primary" @click="delSelected()">删除所选</el-button>
     </p>
-    <el-table border :data="goods">
+
+    <!-- ref="tableData"：设置一个名为tableData的引用，用于将表格所选行传入 -->
+    <el-table border :data="goods" ref="tableData">
         <el-table-column fixes="left" type="selection" width="50px"></el-table-column>
         <el-table-column width="100" label="产品ID" prop="id"></el-table-column>
         <el-table-column width="100" label="产品名" prop="name"></el-table-column>
@@ -368,13 +372,14 @@ products.vue
         <el-table-column width="120" label="操作">
             <!-- scope 包含了当前行的数据以及一些其他信息，比如索引、行对象等，我们可以通过 scope 来访问到当前行的数据，比如 scope.row、scope.column 等 -->
             <template #default="scope">
-                <el-button type="success" size="small" circle icon="edit"></el-button>
+                <el-button type="success" @click="showEdit(scope.row)" size="small" circle icon="edit"></el-button>
                 <el-button type="danger" @click="del(scope.row.id)" size="small" circle icon="delete"></el-button>
             </template>
         </el-table-column>
     </el-table>
 
-    <el-dialog style="width: 40%;height:350px;" v-model="showAddDialog">
+    <!-- 新增的弹出框 -->
+    <el-dialog style="width: 40%;height:350px;" v-model="showAddDialog" @closed="dialogClosed()">
         <el-form label-width="auto" style="max-width: 80%;">
             <el-form-item label="产品名称：">
                 <!-- 在组件中会自动加载ref，所以不需要.value -->
@@ -391,6 +396,27 @@ products.vue
             </el-form-item>
         </el-form>
     </el-dialog>
+
+    <!-- 修改的弹出框 -->
+    <el-dialog style="width: 40%;height:350px;" v-model="showEditDialog" @closed="dialogClosed()">
+        <el-form label-width="auto" style="max-width: 80%;">
+            <el-form-item label="产品ID：">
+                <el-input readonly v-model="addForm.id"></el-input>
+            </el-form-item>
+            <el-form-item label="产品名称：">
+                <el-input v-model="addForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="产品价格：">
+                <el-input-number v-model="addForm.price"></el-input-number>
+            </el-form-item>
+            <el-form-item label="库存：">
+                <el-input-number v-model="addForm.stock"></el-input-number>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" style="margin: auto;" @click="doModify()">确定</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
 </template>
 
 <!-- setup 组合式API 的标识 -->
@@ -402,21 +428,25 @@ products.vue
     在选项式API中的数据默认是响应式的，组合式API是非响应式的
     所以需要使用ref函数使其变成响应式的
     */
-    import { ref } from 'vue'   
+	import { onMounted, ref } from 'vue'   
 
+    //保存页面和修改页面的开关
     let showAddDialog = ref(false);
+    let showEditDialog = ref(false);
+    //变量存储当前处理行数据
+    let addForm = ref({name:'',price:100,stock:10}); 
+    //变量存储页面展示的所有数据
+    let goods = ref([]);
+    //创建一个响应式引用
+    let tableData = ref();
 
-    let addForm = ref({name:'',price:'',stock:10}); 
-
-    let goods = ref([
-        {id:1,name:"手机",price:7000,stock:300},
-        {id:3,name:"电脑",price:8000,stock:200},
-        {id:4,name:"U盘",price:80,stock:500},
-        {id:6,name:"显卡",price:1200,stock:250},
-        {id:7,name:"金士顿内存",price:500,stock:300},
-        {id:8,name:"SSD",price:500,stock:600}
-    ]);
-
+    //删除所选
+    const delSelected =()=>{
+        let rows = tableData.value.getSelectionRows();
+        goods.value = goods.value.filter(item=> !rows.includes(item));
+        save();
+    }
+	//删除指定id行
     const del = id =>{
         //使用了ref后goods不单单只是个数组了，所以需要.value
         goods.value.forEach((item,i) => {
@@ -425,16 +455,60 @@ products.vue
                 goods.value.splice(i,1);
             }
         })
+        save();
     }
-
+    //弹窗关闭时清空addForm
+    const dialogClosed = () =>{
+        addForm.value = {id:'',name:'',price:100,stock:10};
+    }
+	//添加
     const doAdd = ()=>{
-        //会自动增加id字段，动态增加
+        if(goods.value.length > 0){
+            //会自动增加id字段，动态增加
         addForm.value.id = goods.value[goods.value.length-1].id +1;
+        }else{
+            addForm.value.id = 1;
+        }
         goods.value.push(addForm.value);
         showAddDialog.value = false;
-        //删除原来的数组
-        addForm.value = {id:'',name:'',price:'',stock:10};
+        save();
     }
+    //打开修改框
+    const showEdit = row =>{
+        showEditDialog.value = true;
+        addForm.value.id = row.id;
+        addForm.value.name = row.name;
+        addForm.value.price = row.price;
+        addForm.value.stock = row.stock;
+    }
+    //保存修改
+    const doModify = ()=>{
+        //item 就是当前遍历的那行数据
+        goods.value.forEach((item,i)=>{
+            if(item.id == addForm.value.id){
+                item.name = addForm.value.name;
+                item.price = addForm.value.price;
+                item.stock = addForm.value.stock;
+            }
+        })
+        showEditDialog.value = false;
+        save();
+    }
+    //保存到浏览器的本地存储中
+    const save = ()=>{
+        const str = JSON.stringify(goods.value);
+        localStorage.setItem("goods",str);
+    }
+    //onMounted() 钩子函数，组件被挂载到 DOM 后执行特定的代码 
+    //类似于java中的构造函数 在页面执行前会自动调用
+    onMounted(()=>{
+        const str = localStorage.getItem("goods");
+        //首次进入的时候localStorage为空。goods.value为空会报错，所以不能赋值
+        if(str){
+            //将localStorage中的数据赋值到goods中去，用于展示在页面中
+            goods.value = JSON.parse(str);
+        }
+    })
 </script>
 ```
 
