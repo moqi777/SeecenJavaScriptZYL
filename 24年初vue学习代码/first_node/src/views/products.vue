@@ -7,7 +7,7 @@
     </p>
 
     <!-- ref="tableData"：设置一个名为tableData的引用，用于将表格所选行传入 -->
-    <el-table border :data="goods" ref="tableData">
+    <el-table border :data="goods" ref="tableData" style="display: flex;">
         <el-table-column fixes="left" type="selection" width="50px"></el-table-column>
         <el-table-column width="100" label="产品ID" prop="id"></el-table-column>
         <el-table-column width="100" label="产品名" prop="name"></el-table-column>
